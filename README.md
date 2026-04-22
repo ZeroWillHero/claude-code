@@ -16,6 +16,57 @@ The source map file in the published npm package contained a reference to the fu
 
 ---
 
+## Quick Setup
+
+### Prerequisites
+
+- **[Bun](https://bun.sh)** v1.3+ (the project's runtime)
+- **Node.js** v18+ (for npm package installation)
+- An **Anthropic API key** (set as `ANTHROPIC_API_KEY` environment variable)
+
+### Install & Run
+
+```bash
+# 1. Install Bun (if not already installed)
+curl -fsSL https://bun.sh/install | bash
+source ~/.bash_profile  # or restart your terminal
+
+# 2. Install dependencies
+npm install --legacy-peer-deps
+
+# 3. Run Claude Code
+bun run start
+
+# Or with arguments:
+bun run start -- --help
+bun run start -- --version
+bun run start -- -p "Hello Claude"
+```
+
+### Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `bun run start` | Run Claude Code CLI |
+| `bun run dev` | Run with hot-reloading (--watch) |
+| `bun run build` | Bundle for production |
+| `bun run typecheck` | Run TypeScript type checking |
+
+### Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `ANTHROPIC_API_KEY` | Your Anthropic API key (required to use Claude) |
+| `FEATURE_FLAGS` | Comma-separated list of feature flags to enable (e.g., `KAIROS,VOICE_MODE`) |
+
+### Notes
+
+- Some modules from the original source were not included in the leak (Anthropic-internal `@ant/*` packages, some tools). These have been replaced with stubs that export no-ops.
+- The `bun:bundle` feature flag system is shimmed via a Bun plugin at `plugins/bunBundleDev.ts`. All flags default to `false` unless enabled via `FEATURE_FLAGS`.
+- The `MACRO.*` build-time constants are defined in `bunfig.toml` and injected by Bun's `--define` system.
+
+---
+
 ## Overview
 
 Claude Code is Anthropic's official CLI tool that lets you interact with Claude directly from the terminal to perform software engineering tasks — editing files, running commands, searching codebases, managing git workflows, and more.
